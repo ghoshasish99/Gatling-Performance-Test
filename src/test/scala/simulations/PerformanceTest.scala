@@ -17,9 +17,6 @@ class PerformanceTest extends Simulation {
      .check(status.is(201))
      .check(jsonPath("$.name").is("${name}"))
      .check(jsonPath("$.id").saveAs("id")))
- /*    .exec(http("Delete User") 
-     .delete("api/users/${id}")
-     .check(status.is(204)))*/
      //.exec{session => println(session); session}
   }  
   
