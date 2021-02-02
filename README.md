@@ -1,5 +1,7 @@
 # Gatling Test
 
+![Gatling Test](https://github.com/ghoshasish99/gatling-test/workflows/Gatling%20Test/badge.svg)
+
 Gatling HighCharts Dependency
  ```
  <dependency>
