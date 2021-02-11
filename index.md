@@ -1,37 +1,61 @@
-## Welcome to GitHub Pages
+# Gatling Test
 
-You can use the [editor on GitHub](https://github.com/ghoshasish99/Gatling-Performance-Test/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+![Gatling Test](https://github.com/ghoshasish99/gatling-test/workflows/Gatling%20Test/badge.svg)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Gatling HighCharts Dependency
+ ```
+ <dependency>
+    <groupId>io.gatling.highcharts</groupId>
+    <artifactId>gatling-charts-highcharts</artifactId>
+    <version>3.1.0</version>
+ </dependency>
+ ```
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+Scala-library Dependency
+```
+<dependency>
+    <groupId>org.scala-lang</groupId>
+    <artifactId>scala-library</artifactId>
+    <version>2.12.0</version>
+</dependency>
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+To execute the test, use `mvn gatling:test`
 
-### Jekyll Themes
+To set the `http` config :
+```scala
+val httpConf = http.baseUrl("https://reqres.in/")
+    .header("Accept", "application/json")
+```
+To create a request :
+```scala
+.exec(http("Create User")
+.post("api/users")
+.formParam("name", "Ashish")
+.formParam("job", "Test Engineer")
+```
+To check response code :
+```scala
+.check(status.is(201))
+```
+To check a Json tag :
+```scala
+.check(jsonPath("$.name").is("Ashish"))
+```
+To test your JsonPath you can use [this.](https://jsonpath.com/)
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ghoshasish99/Gatling-Performance-Test/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+To store a Json tag as a session variable :
+```scala
+.check(jsonPath("$.id").saveAs("id"))
+```
+Example of how to set up load :
+```scala
+setUp(
+    scn.inject(
+        nothingFor(5),
+        atOnceUsers(10),
+        rampUsers(10) during (20)
+        ).protocols(httpConf)
+  ).maxDuration(60)
+````
+To read more about Gatling, please refer to [this website.](https://gatling.io/)
